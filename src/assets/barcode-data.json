@@ -1,0 +1,12 @@
+[{
+    "barcode": "8901063092280",
+    "name": "Good Day Biscuit",
+    "price": "10",
+    "currency": "USD"
+  },{
+    "barcode": "8901063092282",
+    "name": "Ramen Noodles",
+    "price": "5",
+    "currency": "USD"
+  }
+  ]
