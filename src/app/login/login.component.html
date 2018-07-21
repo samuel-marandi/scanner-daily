@@ -1,3 +1,20 @@
-<p>
-  login works!
-</p>
+<div class="login__root-container">
+    <mat-card class="login__card">
+        <mat-card-subtitle class="login__title">Login</mat-card-subtitle>
+        <mat-divider></mat-divider>        
+        <mat-card-content>
+            <div class="login__field-container">
+                <mat-form-field>
+                  <input matInput [(ngModel)]="username" placeholder="Username">
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput [(ngModel)]="password" placeholder="Password" type="password">
+                </mat-form-field>
+                <div *ngIf="error" class="login__error-container">
+                    <span class="login__error-text">{{error}}</span>
+                </div>
+                <button class="login__button" mat-raised-button color="primary" (click)="onLoginButtonClick()" >Login</button>
+              </div>
+        </mat-card-content>            
+    </mat-card>
+</div>

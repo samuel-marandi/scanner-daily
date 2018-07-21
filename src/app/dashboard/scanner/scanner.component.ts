@@ -8,7 +8,6 @@ import {
 import SCAN_TYPE from '../../../constants/enums';
 import { processBarCodeResult, isItemAlreadyAdded } from '../../utils/scanner-utils';
 import { ToastrService } from 'ngx-toastr'; 
-import { PeriodicElement } from '../interfaces/PeriodicElement';
 import { Item } from '../interfaces/Item';
 
 const My_DATA: Item[] = [
