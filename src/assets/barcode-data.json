@@ -1,12 +1,15 @@
 [{
-    "barcode": "8901063092280",
-    "name": "Good Day Biscuit",
-    "price": "10",
-    "currency": "USD"
-  },{
-    "barcode": "8901063092282",
-    "name": "Ramen Noodles",
-    "price": "5",
-    "currency": "USD"
-  }
-  ]
+  "barcode": "8901063092280",
+  "image": "https://5.imimg.com/data5/DQ/VC/MY-4620137/hide-seek-choco-rolls-biscuits-500x500.jpg",
+  "name": "Hide and Seek",
+  "price": "10",
+  "currency": "USD",
+  "quantity": 1
+},{
+  "barcode": "8901063092282",
+  "image": "https://pics.drugstore.com/prodimg/444028/450.jpg",
+  "name": "Ramen Noodles",
+  "price": "10",
+  "currency": "USD",
+  "quantity": 1
+}]

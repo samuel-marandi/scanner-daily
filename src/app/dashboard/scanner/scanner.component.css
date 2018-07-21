@@ -108,6 +108,10 @@ mat-radio-group mat-radio-button .dashboard-scanner__radio {
     margin-top: 1em;
 }
 
+.dashboard-scanner__call-to-action-remove {
+    margin-right: 1em;
+}
+
 /* 
 table {
     width: 100%;

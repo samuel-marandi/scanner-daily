@@ -15,24 +15,25 @@
       <div class="dashboard-scanner__video-container">
           <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
       </div>
-      {{ capturedBarCodeResult || capturedQRCodeResult || capturedDatatMatrixResult || 'Hello'}}
-
+      <!-- {{ capturedBarCodeResult || capturedQRCodeResult || capturedDatatMatrixResult || 'Hello'}} -->
+      <!-- {{ capturedQRCodeResult.name }} -->
+      {{ capturedBarCodeResult || 'Looking for stuffgit' }}
       <div class="dashboard-scanner__bar-code-result-section">
           <div class="dashboard-scanner__product-image-container">
-            <img class="dashboard-scanner__product-image" src="http://www.dogbazar.org/wp-content/uploads/2014/09/british-bull-dog-puppies.jpg" alt="item-image">
+            <img class="dashboard-scanner__product-image" src="{{capturedQRCodeResult.image || capturedBarCodeResult.image}}">
           </div>
           <div class="dashboard-scanner__product-details-container">
-            <div class="dashboard-scanner__product-title">Product Name</div>
-            <div class="dashboard-scanner__product-cost-and-quantity"><i>Cost : </i>599</div>
-            <div class="dashboard-scanner__product-cost-and-quantity"><i>Quantity:</i> 1</div>
+            <div class="dashboard-scanner__product-title">{{ capturedQRCodeResult.name || capturedBarCodeResult.name }}</div>
+            <div class="dashboard-scanner__product-cost-and-quantity"><i>Cost : </i>{{ capturedQRCodeResult.price || capturedBarCodeResult.price }}</div>
+            <div class="dashboard-scanner__product-cost-and-quantity"><i>Quantity:</i> {{ capturedQRCodeResult.quantity || capturedBarCodeResult.quantity }}</div>
             <div class="dashboard-scanner__call-to-action">
                 
           </div>
           </div>
         </div>
         <div class="dashboard-scanner__call-to-action">
-            <button mat-raised-button>Remove</button>
-            <button mat-raised-button color="primary">Add to List</button>
+            <button mat-raised-button class="dashboard-scanner__call-to-action-remove" (click)="onRemoveClick()">Remove</button>
+            <button mat-raised-button (click)="onAddToItemList()" color="primary">Add to List</button>
         </div>
         <button class="dashboard-scanner__main-call-to-action" mat-raised-button color="primary">See Product List</button>
       

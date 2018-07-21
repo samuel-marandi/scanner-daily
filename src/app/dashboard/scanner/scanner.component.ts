@@ -5,10 +5,30 @@ import {
   BrowserBarcodeReader, 
   BrowserDatamatrixCodeReader,
 } from '@zxing/library';
-import { Device } from '../interfaces/Device';
-import { TypeCheckCompiler } from '../../../../node_modules/@angular/compiler/src/view_compiler/type_check_compiler';
 import SCAN_TYPE from '../../../constants/enums';
+import { 
+  processBarCodeResult, 
+  processQRCodeResult, 
+  processDataMatrixCodeResult
+} from '../../utils/code-result-processor';
 
+const sampleBarCodeData = [
+  {
+    barcode: 8901063092280,
+    image: "https://5.imimg.com/data5/DQ/VC/MY-4620137/hide-seek-choco-rolls-biscuits-500x500.jpg",
+    name: "Hide and Seek",
+    price: 10,
+    currency: "USD",
+    quantity: 1
+  },{
+    barcode: 8901063092282,
+    image: "https://pics.drugstore.com/prodimg/444028/450.jpg",
+    name: "Ramen Noodles",
+    price: 10,
+    currency: "USD",
+    quantity: 1
+  }
+];
 
 @Component({
   selector: 'app-scanner',
@@ -32,6 +52,8 @@ export class ScannerComponent implements OnInit {
   capturedQRCodeResult: any = '';
 
   capturedDatatMatrixResult: any = '';
+
+  scannedItems: any[]= [];
 
   constructor() {}
 
@@ -57,18 +79,28 @@ export class ScannerComponent implements OnInit {
 
   }
 
+  onRemoveClick(): void {
+    this.capturedDatatMatrixResult = '';
+    this.capturedBarCodeResult = '';
+    this.capturedQRCodeResult = '';
+
+    this.initCameraAndRead(this.codeReader);
+  }
+
+  onAddToItemList(): void {
+
+  }
+
   processCapturedResult(result) {
 
-    console.log(result);
-    
     switch(this.selectedScanType) {
       case SCAN_TYPE.QR_CODE:
-        this.capturedQRCodeResult = result;
+        this.capturedQRCodeResult = JSON.parse(result);
         this.capturedBarCodeResult = '';
         this.capturedDatatMatrixResult = '';
         break;
       case SCAN_TYPE.BAR_CODE: 
-        this.capturedBarCodeResult = result;
+        this.capturedBarCodeResult = sampleBarCodeData.find(data => data.barcode === result);
         this.capturedQRCodeResult = '';
         this.capturedDatatMatrixResult = ''
         break;
@@ -83,7 +115,6 @@ export class ScannerComponent implements OnInit {
         this.capturedQRCodeResult = '';
         break;
     }
-
 
   }
 
