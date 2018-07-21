@@ -73,7 +73,7 @@ export class ScannerComponent implements OnInit {
   
   scannedItemColumns: string[] = ['name', 'quantity', 'price', 'id'];
   
-  selectedScanType: string = SCAN_TYPE.BAR_CODE;
+  selectedScanType: string = ''; //SCAN_TYPE.BAR_CODE;
 
   codeReader = new BrowserBarcodeReader;
 
@@ -89,17 +89,19 @@ export class ScannerComponent implements OnInit {
 
   capturedDatatMatrixResult: any = '';
 
-  scannedItems: any[] = My_DATA;
+  scannedItems: any[] = [];
 
-  showCart: boolean = true;
+  showCart: boolean = false;
 
-  constructor(private toastr: ToastrService) {}
+  totalCostInCart: number = 0;
+
+  constructor(private toastr: ToastrService) {
+    this.scannedItems.forEach(item => this.totalCostInCart += item.price);
+    
+  }
 
   ngOnInit() {
-    /**
-     * TODO: Enable this later
-     */
-    // this.initCameraAndRead(this.codeReader);
+    // this.initCameraAndRead(this.codeReader);    
   }
 
   onScanTypeChange(): void {
@@ -125,8 +127,13 @@ export class ScannerComponent implements OnInit {
     this.initCameraAndRead(this.codeReader);
   }
 
-  onItemRemoveClick(id): void {
-    this.scannedItems = [...this.scannedItems.filter(item => item.id !== id)]
+  onItemRemoveClick(id) {
+    this.scannedItems = this.scannedItems.filter(item => item.id !== id);
+    
+    // this.scannedItems.forEach(item => this.totalCostInCart = this.totalCostInCart - item.price);
+
+    // console.log(this.totalCostInCart);
+
   }
 
   onAddToItemList(): void {
@@ -145,7 +152,9 @@ export class ScannerComponent implements OnInit {
 
       this.capturedDatatMatrixResult = '';
       this.capturedBarCodeResult = '';
-      this.capturedQRCodeResult = '';    
+      this.capturedQRCodeResult = '';
+
+      this.scannedItems.forEach(item => this.totalCostInCart += item.price);
 
       this.initCameraAndRead(this.codeReader);
     }
