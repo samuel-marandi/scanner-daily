@@ -2,57 +2,88 @@
 <button (click)="onButtonClickHandler()">Click Here to scan</button> -->
 
 <div class="dashboard-scanner__root-container">
-    <div class="dashboard-scanner__scan-type-container">
-        <span class="dashboard-scanner__scan-type-label">Choose Scanner Type</span>
-        <mat-radio-group [(ngModel)]="selectedScanType" class="dashboard-scanner__radio-group" (change)="onScanTypeChange()">
-          <!-- <mat-radio-button class="dashboard-scanner__radio" [value]="'pdf417'">PDF417</mat-radio-button> -->
-          <mat-radio-button class="dashboard-scanner__radio" [value]="'DATA_MATRIX'">Data Matrix</mat-radio-button>
-          <mat-radio-button class="dashboard-scanner__radio" [value]="'BAR_CODE'" >Bar Code</mat-radio-button>
-            <mat-radio-button class="dashboard-scanner__radio" [value]="'QR_CODE'">QR Code</mat-radio-button>
-          </mat-radio-group>
-      </div>
-      <div class="dashboard-scanner__divider"></div>
-      <div class="dashboard-scanner__video-container">
-          <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
-      </div>
-      <!-- {{ capturedBarCodeResult || capturedQRCodeResult || capturedDatatMatrixResult || 'Hello'}} -->
-      <!-- {{ capturedQRCodeResult.name }} -->
-      {{ capturedBarCodeResult || 'Looking for stuffgit' }}
-      <div class="dashboard-scanner__bar-code-result-section">
-          <div class="dashboard-scanner__product-image-container">
-            <img class="dashboard-scanner__product-image" src="{{capturedQRCodeResult.image || capturedBarCodeResult.image}}">
-          </div>
-          <div class="dashboard-scanner__product-details-container">
-            <div class="dashboard-scanner__product-title">{{ capturedQRCodeResult.name || capturedBarCodeResult.name }}</div>
-            <div class="dashboard-scanner__product-cost-and-quantity"><i>Cost : </i>{{ capturedQRCodeResult.price || capturedBarCodeResult.price }}</div>
-            <div class="dashboard-scanner__product-cost-and-quantity"><i>Quantity:</i> {{ capturedQRCodeResult.quantity || capturedBarCodeResult.quantity }}</div>
-            <div class="dashboard-scanner__call-to-action">
-                
-          </div>
-          </div>
-        </div>
-        <div class="dashboard-scanner__call-to-action">
-            <button mat-raised-button class="dashboard-scanner__call-to-action-remove" (click)="onRemoveClick()">Remove</button>
-            <button mat-raised-button (click)="onAddToItemList()" color="primary">Add to List</button>
-        </div>
-        <button class="dashboard-scanner__main-call-to-action" mat-raised-button color="primary">See Product List</button>
-      
-    <!-- <span class="dashboard-scanner__label-choose-camera">Choose camera :</span> -->
-    <!-- <ng-select 
-      [items]="inputDevices" 
-      [(ngModel)]="selectedCameraDevice" 
-      (change)="onCameraDeviceChange()" 
-      placeholder="Select Camera"
-      bindLabel="label"
-      bindValue="deviceId"
-    >
-    </ng-select> -->
-    <!-- 
+    <div *ngIf="showCart; else showScanner">
 
+        <table mat-table [dataSource]="scannedItems" class="mat-elevation-z8">
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+          
+            <!-- Qunatity Column -->
+            <ng-container matColumnDef="quantity">
+              <th mat-header-cell *matHeaderCellDef> Quantity </th>
+              <td mat-cell *matCellDef="let element"> {{element.quantity}} {{element.unit}} </td>
+            </ng-container>
+          
+            <!-- Cost Column -->
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef> Price </th>
+              <td mat-cell *matCellDef="let element"> {{element.price | currency:'INR':'symbol'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <button mat-button color="warn" (click)="onItemRemoveClick(element.id)">Remove</button>
+                </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="scannedItemColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: scannedItemColumns;"></tr>
+          </table>
+          
+          
+    </div>
+    <ng-template #showScanner>
+        <div class="dashboard-scanner__scan-type-container">
+            <span class="dashboard-scanner__scan-type-label">Select A Scanner</span>
+            <mat-radio-group [(ngModel)]="selectedScanType" class="dashboard-scanner__radio-group" (change)="onScanTypeChange()">
+              <!-- <mat-radio-button class="dashboard-scanner__radio" [value]="'pdf417'">PDF417</mat-radio-button> -->
+              <mat-radio-button class="dashboard-scanner__radio" [value]="'DATA_MATRIX'">Data Matrix</mat-radio-button>
+              <mat-radio-button class="dashboard-scanner__radio" [value]="'BAR_CODE'" >Bar Code</mat-radio-button>
+                <mat-radio-button class="dashboard-scanner__radio" [value]="'QR_CODE'">QR Code</mat-radio-button>
+              </mat-radio-group>
+        </div>
+        <div class="dashboard-scanner__divider"></div>
+        <div class="dashboard-scanner__video-container">
+            <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
+        </div>
+        <div *ngIf="!showCart && capturedQRCodeResult || capturedBarCodeResult || capturedDatatMatrixResult">
+            <div class="dashboard-scanner__bar-code-result-section">
+                <div class="dashboard-scanner__product-image-container">
+                  <img 
+                    class="dashboard-scanner__product-image" 
+                    src="{{capturedQRCodeResult.image || capturedBarCodeResult.image || capturedDatatMatrixResult.image }}"
+                  >
+                </div>
+                <div class="dashboard-scanner__product-details-container">
+                  <div class="dashboard-scanner__product-title">
+                    {{ capturedQRCodeResult.name || capturedBarCodeResult.name || capturedDatatMatrixResult.name}}
+                  </div>
+                  <div class="dashboard-scanner__product-cost-and-quantity">
+                    <i>Cost : </i>
+                    {{ capturedQRCodeResult.price || capturedBarCodeResult.price || capturedDatatMatrixResult.price  | currency:'INR':'symbol' }}
+                  </div>
+                  <div class="dashboard-scanner__product-cost-and-quantity">
+                    <i>Quantity:</i> 
+                    {{ capturedQRCodeResult.quantity || capturedBarCodeResult.quantity || capturedDatatMatrixResult.quantity  }}
+                    {{ capturedQRCodeResult.unit || capturedBarCodeResult.unit || capturedDatatMatrixResult.unit   }}
+                  </div>
+                  <div class="dashboard-scanner__call-to-action">
+                </div>
+                </div>
+              </div>
+              <div class="dashboard-scanner__call-to-action">
+                  <button mat-raised-button class="dashboard-scanner__call-to-action-remove" (click)="onRemoveClick()">Remove</button>
+                  <button mat-raised-button (click)="onAddToItemList()" color="primary">Add to List</button>
+              </div>
+        </div>
+    </ng-template>
+    <button *ngIf="scannedItems.length !==0" mat-raised-button color="primary" (click)="showCart = !showCart" class="dashboard-scanner__main-call-to-action" >
+      {{ showCart ? 'Scan more items':'See List of Added Items' }}
+    </button>
 
 </div>
-<button (click)="onButtonClickHandler()">Click Here to scan</button> -->
-
-<!-- <p>
-  
-</p> -->

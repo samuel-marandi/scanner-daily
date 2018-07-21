@@ -90,8 +90,10 @@ mat-radio-group mat-radio-button .dashboard-scanner__radio {
 }
 
 .dashboard-scanner__product-title {
-    font-size: 1em;
+    font-size: .875em;
     font-weight: 700;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .dashboard-scanner__product-cost-and-quantity {
@@ -111,11 +113,19 @@ mat-radio-group mat-radio-button .dashboard-scanner__radio {
 .dashboard-scanner__call-to-action-remove {
     margin-right: 1em;
 }
-
 /* 
+.dashboard-scanner__data-matrix-result {
+    margin-top: 1em;
+    text-align: justify;
+    border: .5px solid grey;
+    padding: 1em;
+    border-radius: 2px;
+} */
+
+
 table {
     width: 100%;
-} */
+}
   
 /* 
 

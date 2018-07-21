@@ -1,15 +1,17 @@
 [{
-  "barcode": "8901063092280",
-  "image": "https://5.imimg.com/data5/DQ/VC/MY-4620137/hide-seek-choco-rolls-biscuits-500x500.jpg",
-  "name": "Hide and Seek",
-  "price": "10",
-  "currency": "USD",
-  "quantity": 1
+  "id": 89010,
+  "image": "https://shop.countdown.co.nz/Content/ProductImages/large/9300657790066.jpg/Wattie-s-Mixed-Vegetables-Carrots-Peas-Green-Beans-Corn.jpg",
+  "name": "Mixed Veggies",
+  "price": 35,
+  "currency": "INR",
+  "quantity": 500,
+  "unit": "gm"
 },{
-  "barcode": "8901063092282",
-  "image": "https://pics.drugstore.com/prodimg/444028/450.jpg",
-  "name": "Ramen Noodles",
-  "price": "10",
-  "currency": "USD",
-  "quantity": 1
+  "id": 89211,
+  "image": "http://www.edenia-foods.com/wp-content/uploads/2016/12/legume-simple_0010_fasole-verde-1kg.png",
+  "name": "Whole Green Bean",
+  "price": 23,
+  "currency": "INR",
+  "quantity": 1,
+  "unit": "kg"
 }]

@@ -6,29 +6,63 @@ import {
   BrowserDatamatrixCodeReader,
 } from '@zxing/library';
 import SCAN_TYPE from '../../../constants/enums';
-import { 
-  processBarCodeResult, 
-  processQRCodeResult, 
-  processDataMatrixCodeResult
-} from '../../utils/code-result-processor';
+import { processBarCodeResult, isItemAlreadyAdded } from '../../utils/scanner-utils';
+import { ToastrService } from 'ngx-toastr'; 
+import { PeriodicElement } from '../interfaces/PeriodicElement';
+import { Item } from '../interfaces/Item';
 
-const sampleBarCodeData = [
+const My_DATA: Item[] = [
   {
-    barcode: 8901063092280,
+    currency: "INR",
+    id: 89010,
+    image: "https://shop.countdown.co.nz/Content/ProductImages/large/9300657790066.jpg/Wattie-s-Mixed-Vegetables-Carrots-Peas-Green-Beans-Corn.jpg",
+    name: "Mixed Veggies",
+    price: 35,
+    quantity: 500,
+    unit: "gm"
+  }, {
+    currency: "INR",
+    id: 89211,
+    image: "http://www.edenia-foods.com/wp-content/uploads/2016/12/legume-simple_0010_fasole-verde-1kg.png",
+    name: "Ramen Noodles",
+    price: 23,
+    quantity: 1,
+    unit: "kg"
+  },{
+    currency: "INR",
+    id: 12345,
+    image: "https://boygeniusreport.files.wordpress.com/2018/02/oneplus-5t-red.jpg?quality=98&strip=all&w=782",
+    name: "One Plus 6 ",
+    price: 30000,
+    quantity: 1,
+    unit: ""
+  }, {
+    currency: "INR",
+    id: 567890,
+    image: "https://media.wired.com/photos/5b22c5c4b878a15e9ce80d92/master/pass/iphonex-TA.jpg",
+    name: "iPhone X",
+    price: 99000,
+    quantity: 1,
+    unit: ""
+  }, {
+    currency: "INR",
+    id: 4356789,
     image: "https://5.imimg.com/data5/DQ/VC/MY-4620137/hide-seek-choco-rolls-biscuits-500x500.jpg",
     name: "Hide and Seek",
-    price: 10,
-    currency: "USD",
-    quantity: 1
+    price: 15,
+    quantity: 1,
+    unit: ""
   },{
-    barcode: 8901063092282,
+    currency: "INR",
+    id: 9801232,
     image: "https://pics.drugstore.com/prodimg/444028/450.jpg",
     name: "Ramen Noodles",
     price: 10,
-    currency: "USD",
-    quantity: 1
+    quantity: 1,
+    unit: ""
   }
-];
+]
+
 
 @Component({
   selector: 'app-scanner',
@@ -36,7 +70,9 @@ const sampleBarCodeData = [
   styleUrls: ['./scanner.component.css']
 })
 export class ScannerComponent implements OnInit {
-
+  
+  scannedItemColumns: string[] = ['name', 'quantity', 'price', 'id'];
+  
   selectedScanType: string = SCAN_TYPE.BAR_CODE;
 
   codeReader = new BrowserBarcodeReader;
@@ -53,9 +89,11 @@ export class ScannerComponent implements OnInit {
 
   capturedDatatMatrixResult: any = '';
 
-  scannedItems: any[]= [];
+  scannedItems: any[] = My_DATA;
 
-  constructor() {}
+  showCart: boolean = true;
+
+  constructor(private toastr: ToastrService) {}
 
   ngOnInit() {
     /**
@@ -74,8 +112,8 @@ export class ScannerComponent implements OnInit {
 
   initCameraAndRead(codeReader): any {
     codeReader.decodeFromInputVideoDevice(undefined, 'video')
-          .then(result => this.processCapturedResult(result))
-          .catch(err => alert(err));
+          .then(result => this.processCapturedResult(result));
+          // .catch(err => alert(err));
 
   }
 
@@ -87,7 +125,30 @@ export class ScannerComponent implements OnInit {
     this.initCameraAndRead(this.codeReader);
   }
 
+  onItemRemoveClick(id): void {
+    this.scannedItems = [...this.scannedItems.filter(item => item.id !== id)]
+  }
+
   onAddToItemList(): void {
+
+    const currentScannedItem = this.capturedDatatMatrixResult || this.capturedQRCodeResult || this.capturedBarCodeResult;
+
+    if(isItemAlreadyAdded(this.scannedItems, currentScannedItem)) {
+        
+      this.toastr.error('', 'This item is already in the list.', { 'timeOut': 3000 });
+    
+    } else {
+
+      this.scannedItems = [...this.scannedItems, currentScannedItem];
+
+      this.toastr.info('','Item Added', { 'timeOut': 3000 });
+
+      this.capturedDatatMatrixResult = '';
+      this.capturedBarCodeResult = '';
+      this.capturedQRCodeResult = '';    
+
+      this.initCameraAndRead(this.codeReader);
+    }
 
   }
 
@@ -100,12 +161,13 @@ export class ScannerComponent implements OnInit {
         this.capturedDatatMatrixResult = '';
         break;
       case SCAN_TYPE.BAR_CODE: 
-        this.capturedBarCodeResult = sampleBarCodeData.find(data => data.barcode === result);
+        // this.capturedBarCodeResult = sampleBarCodeData.find(data => data.barcode.toString() === result.toString());
+        this.capturedBarCodeResult = processBarCodeResult(result);
         this.capturedQRCodeResult = '';
         this.capturedDatatMatrixResult = ''
         break;
       case SCAN_TYPE.DATA_MATRIX: 
-        this.capturedDatatMatrixResult = result;
+        this.capturedDatatMatrixResult = JSON.parse(result);
         this.capturedBarCodeResult = '';
         this.capturedQRCodeResult = '';
         break;
@@ -117,37 +179,6 @@ export class ScannerComponent implements OnInit {
     }
 
   }
-
-
-
-  onButtonClickHandler() : void {
-    console.log('I have been clicked')
-    const codeReader = new BrowserQRCodeReader();
-    
-    // codeReader.decodeFromInputVideoDevice(undefined, 'video')
-    // .then(result => console.log(result))
-    // .catch(err => alert(err));
-
-
-    codeReader.getVideoInputDevices()
-    .then(videoInputDevices => {
-        videoInputDevices.forEach(
-            device => alert(`${device.label}, ${device.deviceId}`)
-            
-        );
-
-        const firstDeviceId = videoInputDevices[0].deviceId;
-
-        codeReader.decodeFromInputVideoDevice(undefined, 'video')
-          .then(result => console.log(result))
-          .catch(err => alert(err));
-    })
-    .catch(err => alert(err));
-  }
-
-  /**
-   * Gets the list of available camera devices
-   */
 }
 
 // getInputDevice(): void {
@@ -189,3 +220,35 @@ export class ScannerComponent implements OnInit {
   
   
 // }
+
+
+
+
+  // onButtonClickHandler() : void {
+  //   console.log('I have been clicked')
+  //   const codeReader = new BrowserQRCodeReader();
+    
+    // codeReader.decodeFromInputVideoDevice(undefined, 'video')
+    // .then(result => console.log(result))
+    // .catch(err => alert(err));
+
+
+  //   codeReader.getVideoInputDevices()
+  //   .then(videoInputDevices => {
+  //       videoInputDevices.forEach(
+  //           device => alert(`${device.label}, ${device.deviceId}`)
+            
+  //       );
+
+  //       const firstDeviceId = videoInputDevices[0].deviceId;
+
+  //       codeReader.decodeFromInputVideoDevice(undefined, 'video')
+  //         .then(result => console.log(result))
+  //         .catch(err => alert(err));
+  //   })
+  //   .catch(err => alert(err));
+  // }
+
+  /**
+   * Gets the list of available camera devices
+   */
