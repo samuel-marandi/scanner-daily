@@ -1,4 +1,57 @@
-<p>
-  <button (click)="onButtonClickHandler()">Click Here to scan</button>
-  <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
-</p>
+<!-- <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
+<button (click)="onButtonClickHandler()">Click Here to scan</button> -->
+
+<div class="dashboard-scanner__root-container">
+    <div class="dashboard-scanner__scan-type-container">
+        <span class="dashboard-scanner__scan-type-label">Choose Scanner Type</span>
+        <mat-radio-group [(ngModel)]="selectedScanType" class="dashboard-scanner__radio-group" (change)="onScanTypeChange()">
+          <!-- <mat-radio-button class="dashboard-scanner__radio" [value]="'pdf417'">PDF417</mat-radio-button> -->
+          <mat-radio-button class="dashboard-scanner__radio" [value]="'DATA_MATRIX'">Data Matrix</mat-radio-button>
+          <mat-radio-button class="dashboard-scanner__radio" [value]="'BAR_CODE'" >Bar Code</mat-radio-button>
+            <mat-radio-button class="dashboard-scanner__radio" [value]="'QR_CODE'">QR Code</mat-radio-button>
+          </mat-radio-group>
+      </div>
+      <div class="dashboard-scanner__divider"></div>
+      <div class="dashboard-scanner__video-container">
+          <video id="video" width="300" height="200" style="border: 1px solid gray"></video>
+      </div>
+      {{ capturedBarCodeResult || capturedQRCodeResult || capturedDatatMatrixResult || 'Hello'}}
+
+      <div class="dashboard-scanner__bar-code-result-section">
+          <div class="dashboard-scanner__product-image-container">
+            <img class="dashboard-scanner__product-image" src="http://www.dogbazar.org/wp-content/uploads/2014/09/british-bull-dog-puppies.jpg" alt="item-image">
+          </div>
+          <div class="dashboard-scanner__product-details-container">
+            <div class="dashboard-scanner__product-title">Product Name</div>
+            <div class="dashboard-scanner__product-cost-and-quantity"><i>Cost : </i>599</div>
+            <div class="dashboard-scanner__product-cost-and-quantity"><i>Quantity:</i> 1</div>
+            <div class="dashboard-scanner__call-to-action">
+                
+          </div>
+          </div>
+        </div>
+        <div class="dashboard-scanner__call-to-action">
+            <button mat-raised-button>Remove</button>
+            <button mat-raised-button color="primary">Add to List</button>
+        </div>
+        <button class="dashboard-scanner__main-call-to-action" mat-raised-button color="primary">See Product List</button>
+      
+    <!-- <span class="dashboard-scanner__label-choose-camera">Choose camera :</span> -->
+    <!-- <ng-select 
+      [items]="inputDevices" 
+      [(ngModel)]="selectedCameraDevice" 
+      (change)="onCameraDeviceChange()" 
+      placeholder="Select Camera"
+      bindLabel="label"
+      bindValue="deviceId"
+    >
+    </ng-select> -->
+    <!-- 
+
+
+</div>
+<button (click)="onButtonClickHandler()">Click Here to scan</button> -->
+
+<!-- <p>
+  
+</p> -->
