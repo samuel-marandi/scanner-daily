@@ -5,5 +5,13 @@ const SCAN_TYPE = {
     DATA_MATRIX: 'DATA_MATRIX',
 }
 
+const AUTHENTICATION = {
+    ERROR: 'Username of Password is incorrect',
+    MOCK_USERNAME: 'am9obmRvZQ==',
+    MOCK_PASSWORD: 'cGFzc3dvcmQ=',
+}
+
 export default SCAN_TYPE;
+
+export { SCAN_TYPE, AUTHENTICATION };
 
