@@ -114,13 +114,29 @@ mat-radio-group mat-radio-button .dashboard-scanner__radio {
     margin-right: 1em;
 }
 
-.dashboard-scanner__total-cost {
+.dashboard-scanner__total-cost-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 1em;
-    padding: 1em;
-    font-size: 1.2em;
+    padding: 1em 0;
+    font-size: 1em;
     font-weight: 600;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 600px) {
+    .dashboard-scanner__total-cost-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1em;
+        padding: 1em 0;
+        font-size: 1em;
+        font-weight: 600;
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
 }
 
 .dashboard-scanner__table-cell {
@@ -139,6 +155,19 @@ mat-radio-group mat-radio-button .dashboard-scanner__radio {
     display: flex;
     justify-content: flex-end;
     height: 4em;
+}
+
+.dashboard-scanner__cart-title {
+    font-size: 1em;
+    font-weight: 700;
+}
+
+.dashboard-scanner__cart-stats-container-left {
+    display: flex;
+}
+
+.dashboard-scanner__cart-stats-container-right{
+    display: flex;
 }
 
 table {

@@ -1,7 +1,7 @@
 
 <div class="dashboard-scanner__root-container">
     <div *ngIf="showCart; else showScanner">
-
+        <p class="dashboard-scanner__cart-title">Items in Cart</p>
         <table mat-table [dataSource]="scannedItems" class="mat-elevation-z8">
 
             <!-- Name Column -->
@@ -32,10 +32,11 @@
             <tr mat-header-row *matHeaderRowDef="scannedItemColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: scannedItemColumns;"></tr>
           </table>
-          <div class="dashboard-scanner__total-cost">
+          <!-- <div class="dashboard-scanner__total-cost-container"> -->
             <!-- Total Cost of items: {{ totalCostInCart | currency:'INR':'symbol'}} -->
-          </div>
-          
+            <!-- <div class="dashboard-scanner__cart-stats-container-left">Number of Items: {{scannedItems.length}}</div>
+            <div class="dashboard-scanner__cart-stats-container-right">Total Amount: {{totalCostInCart | currency:'INR':'symbol'}}</div>
+          </div> -->
     </div>
     <ng-template #showScanner>
         <div class="dashboard-scanner__scan-type-container">
@@ -78,12 +79,12 @@
               </div>
               <div class="dashboard-scanner__call-to-action">
                   <button mat-raised-button class="dashboard-scanner__call-to-action-remove" (click)="onRemoveClick()">Remove</button>
-                  <button mat-raised-button (click)="onAddToItemList()" color="primary">Add to List</button>
+                  <button mat-raised-button (click)="onAddToItemList()" color="primary">Add to Cart</button>
               </div>
         </div>
     </ng-template>
     <button *ngIf="scannedItems.length !==0" mat-raised-button color="primary" (click)="showCart = !showCart" class="dashboard-scanner__main-call-to-action" >
-      {{ showCart ? 'Scan more items':'See List of Added Items' }}
+      {{ showCart ? 'Scan More':'Go to Cart' }}
     </button>
 
 </div>
