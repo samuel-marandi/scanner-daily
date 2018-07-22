@@ -17,3 +17,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 johndoe
 password
 ```
+
+#### Sample barcode for testing
+
+Sample images to test the app can be found under `src/assets/images/sample-scan-codes`
